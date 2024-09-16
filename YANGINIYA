@@ -1,0 +1,318 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
+
+export default function BuatSoal() {
+  const [jenisTes, setJenisTes] = useState('');
+  const [kategoriTes, setKategoriTes] = useState('');
+  const [namaAuthor, setNamaAuthor] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const [kemiripanTes, setKemiripanTes] = useState('');
+
+  const [showJenisDropdown, setShowJenisDropdown] = useState(false);
+  const [showKategoriDropdown, setShowKategoriDropdown] = useState(false);
+  const [showKemiripanDropdown, setShowKemiripanDropdown] = useState(false);
+
+  const [activeTab, setActiveTab] = useState('buatTes'); // State untuk navigasi
+
+  const jenisDropdownRef = useRef(null);
+  const kategoriDropdownRef = useRef(null);
+  const kemiripanDropdownRef = useRef(null);
+
+  // Handle clicks outside of dropdowns
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (jenisDropdownRef.current && !jenisDropdownRef.current.contains(event.target)) {
+        setShowJenisDropdown(false);
+      }
+      if (kategoriDropdownRef.current && !kategoriDropdownRef.current.contains(event.target)) {
+        setShowKategoriDropdown(false);
+      }
+      if (kemiripanDropdownRef.current && !kemiripanDropdownRef.current.contains(event.target)) {
+        setShowKemiripanDropdown(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="bg-gray-100 min-h-screen">
+      {/* Header */}
+      <header className="bg-[#0B61AA] text-white shadow-md p-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <button className="text-white text-2xl">
+            &#9776;
+          </button>
+          <span className="text-xl font-semibold">EtamTest</span>
+        </div>
+      </header>
+
+      {/* Navigasi */}
+      <nav className="bg-[#0056A0] text-white p-4">
+        <ul className="flex justify-around">
+          <li>
+            <button
+              className={`px-4 py-2 ${activeTab === 'buatTes' ? 'bg-[#003C7A]' : ''}`}
+              onClick={() => setActiveTab('buatTes')}
+            >
+              Buat Tes
+            </button>
+          </li>
+          <li>
+            <button
+              className={`px-4 py-2 ${activeTab === 'publikasi' ? 'bg-[#003C7A]' : ''}`}
+              onClick={() => setActiveTab('publikasi')}
+            >
+              Publikasi
+            </button>
+          </li>
+          <li>
+            <button
+              className={`px-4 py-2 ${activeTab === 'terpublikasi' ? 'bg-[#003C7A]' : ''}`}
+              onClick={() => setActiveTab('terpublikasi')}
+            >
+              Tes Terpublikasi
+            </button>
+          </li>
+          <li>
+            <button
+              className={`px-4 py-2 ${activeTab === 'analisis' ? 'bg-[#003C7A]' : ''}`}
+              onClick={() => setActiveTab('analisis')}
+            >
+              Analisis
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Konten Utama */}
+      <div className="flex justify-center items-start mt-4">
+        {/* Bar utama */}
+        {activeTab === 'buatTes' && (
+          <div className="bg-[#465CF6] p-6 rounded-md" style={{ width: '1343px', height: '817px' }}>
+            <div className="flex justify-between">
+              <div>
+                <h3 className="text-white text-lg mb-4">Jenis</h3>
+                <h3 className="text-white text-lg mb-4">Kategori</h3>
+                <h3 className="text-white text-lg mb-4">Nama</h3>
+                <h3 className="text-white text-lg mb-4">Deskripsi</h3>
+                <h3 className="text-white text-lg mb-4">Prediksi Kemiripan</h3>
+              </div>
+              
+              {/* Bar putih di samping */}
+              <div className="bg-white p-6 rounded-md shadow-lg" style={{ width: '902px', height: '654px' }}>
+                {/* Dropdown Jenis Tes */}
+                <div className="mb-4">
+                  <div className="relative" ref={jenisDropdownRef}>
+                    <button
+                      className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+                      onClick={() => setShowJenisDropdown(!showJenisDropdown)}
+                    >
+                      {jenisTes || 'Jenis Tes'}
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6.293 9.293a1 1 0 011.414 0L10 10.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    {showJenisDropdown && (
+                      <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setJenisTes('Pilihan Ganda'); setShowJenisDropdown(false); }}
+                          >
+                            Pilihan Ganda
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setJenisTes('Essay'); setShowJenisDropdown(false); }}
+                          >
+                            Essay
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setJenisTes('Psikotes'); setShowJenisDropdown(false); }}
+                          >
+                            Psikotes
+                          </button>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Dropdown Kategori Tes */}
+                <div className="mb-4">
+                  <div className="relative" ref={kategoriDropdownRef}>
+                    <button
+                      className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+                      onClick={() => setShowKategoriDropdown(!showKategoriDropdown)}
+                    >
+                      {kategoriTes || 'Kategori Tes'}
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6.293 9.293a1 1 0 011.414 0L10 10.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    {showKategoriDropdown && (
+                      <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKategoriTes('CPNS'); setShowKategoriDropdown(false); }}
+                          >
+                            CPNS
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKategoriTes('UTBK'); setShowKategoriDropdown(false); }}
+                          >
+                            UTBK
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKategoriTes('Psikotes'); setShowKategoriDropdown(false); }}
+                          >
+                            Psikotes
+                          </button>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Input Nama Author */}
+                <div className="mb-4">
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 p-2 rounded-md"
+                    value={namaAuthor}
+                    onChange={(e) => setNamaAuthor(e.target.value)}
+                    placeholder="Nama Author"
+                  />
+                </div>
+                
+                {/* Input Deskripsi */}
+                <div className="mb-4">
+                  <textarea
+                    className="w-full border border-gray-300 p-2 rounded-md"
+                    value={deskripsi}
+                    onChange={(e) => setDeskripsi(e.target.value)}
+                    placeholder="Deskripsi"
+                  ></textarea>
+                  <p className="text-gray-500 text-xs mt-1">Deskripsi secara singkat mengenai tes soal yang dibuat.</p>
+                </div>
+                
+                {/* Dropdown Kemiripan Tes */}
+                <div className="mb-4">
+                  <div className="relative" ref={kemiripanDropdownRef}>
+                    <button
+                      className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+                      onClick={() => setShowKemiripanDropdown(!showKemiripanDropdown)}
+                    >
+                      {kemiripanTes || 'Kemiripan Tes'}
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6.293 9.293a1 1 0 011.414 0L10 10.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    {showKemiripanDropdown && (
+                      <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKemiripanTes('45%'); setShowKemiripanDropdown(false); }}
+                          >
+                            45%
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKemiripanTes('75%'); setShowKemiripanDropdown(false); }}
+                          >
+                            75%
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => { setKemiripanTes('85%'); setShowKemiripanDropdown(false); }}
+                          >
+                            85%
+                          </button>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+
+                {/* Tombol Selanjutnya */}
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                  Selanjutnya
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'publikasi' && (
+          <div className="bg-[#F0F4F8] p-6 rounded-md" style={{ width: '1343px', height: '817px' }}>
+            <h3 className="text-lg font-semibold">Konten Publikasi</h3>
+            {/* Konten untuk Publikasi */}
+          </div>
+        )}
+
+        {activeTab === 'terpublikasi' && (
+          <div className="bg-[#F0F4F8] p-6 rounded-md" style={{ width: '1343px', height: '817px' }}>
+            <h3 className="text-lg font-semibold">Konten Tes Terpublikasi</h3>
+            {/* Konten untuk Tes Terpublikasi */}
+          </div>
+        )}
+
+        {activeTab === 'analisis' && (
+          <div className="bg-[#F0F4F8] p-6 rounded-md" style={{ width: '1343px', height: '817px' }}>
+            <h3 className="text-lg font-semibold">Konten Analisis</h3>
+            {/* Konten untuk Analisis */}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
